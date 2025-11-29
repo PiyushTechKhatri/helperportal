@@ -15,7 +15,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Enums
-export const userRoleEnum = pgEnum("user_role", ["client", "worker", "agent", "admin"]);
+export const userRoleEnum = pgEnum("user_role", ["user", "client", "worker", "agent", "admin"]);
 export const subscriptionTierEnum = pgEnum("subscription_tier", ["free", "basic", "premium", "business"]);
 export const verificationLevelEnum = pgEnum("verification_level", ["none", "basic", "police", "premium"]);
 export const workTypeEnum = pgEnum("work_type", ["full_time", "part_time", "contract"]);
@@ -38,11 +38,12 @@ export const sessions = pgTable(
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: varchar("email").unique(),
+  password: varchar("password"),
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   phone: varchar("phone"),
   profileImageUrl: varchar("profile_image_url"),
-  role: userRoleEnum("role").default("client").notNull(),
+  role: userRoleEnum("role").default("user").notNull(),
   isActive: boolean("is_active").default(true).notNull(),
   preferredLanguage: varchar("preferred_language").default("en"),
   createdAt: timestamp("created_at").defaultNow(),

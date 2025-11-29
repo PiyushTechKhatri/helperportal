@@ -17,17 +17,28 @@ import PostJob from "@/pages/PostJob";
 import Dashboard from "@/pages/Dashboard";
 import AgentDashboard from "@/pages/AgentDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
+import { Auth } from "@/pages/Auth";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
+
+  const getDefaultRoute = () => {
+    if (!isAuthenticated || !user) return Landing;
+    
+    switch (user.role) {
+      case "admin":
+        return AdminDashboard;
+      case "agent":
+        return AgentDashboard;
+      default:
+        return Home;
+    }
+  };
 
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <Route path="/" component={Home} />
-      )}
+      <Route path="/" component={getDefaultRoute()} />
+      <Route path="/auth" component={Auth} />
       <Route path="/search" component={Search} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/post-job" component={PostJob} />

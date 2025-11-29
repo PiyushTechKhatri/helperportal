@@ -1,6 +1,6 @@
 import { Express, Request } from "express";
 import { storage } from "./storage";
-import { isAuthenticated } from "./replitAuth";
+import { isAuthenticated } from "./simpleAuth";
 import { insertWorkerSchema, insertJobSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express) {
@@ -9,24 +9,11 @@ export async function registerRoutes(app: Express) {
 
   // Helper to get user from session
   const getUser = (req: Request) => {
-    const user = req.user as any;
-    return user?.claims?.sub ? { id: user.claims.sub } : null;
+    const userId = (req as any).session?.userId;
+    return userId ? { id: userId } : null;
   };
 
-  // Auth routes
-  app.get("/api/auth/user", async (req, res) => {
-    const sessionUser = req.user as any;
-    if (!sessionUser?.claims?.sub) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
 
-    const user = await storage.getUser(sessionUser.claims.sub);
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    res.json(user);
-  });
 
   // Categories
   app.get("/api/categories", async (req, res) => {

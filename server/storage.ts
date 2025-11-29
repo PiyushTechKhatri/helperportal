@@ -44,6 +44,7 @@ export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: any): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
   updateUserRole(userId: string, role: string): Promise<User | undefined>;
   getAgents(): Promise<User[]>;
@@ -146,6 +147,11 @@ class DatabaseStorage implements IStorage {
   async getUserByEmail(email: string): Promise<User | undefined> {
     const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
     return result[0];
+  }
+
+  async createUser(user: any): Promise<User> {
+    const [result] = await db.insert(users).values(user).returning();
+    return result;
   }
 
   async upsertUser(user: UpsertUser): Promise<User> {
@@ -681,6 +687,34 @@ class DatabaseStorage implements IStorage {
     ];
 
     await db.insert(subscriptionPlans).values(defaultPlans);
+
+    // Create default admin and agent accounts
+    const bcrypt = await import("bcrypt");
+    const defaultPassword = await bcrypt.hash("admin123", 10);
+    
+    const defaultUsers = [
+      {
+        email: "admin@jaipurhelp.com",
+        password: defaultPassword,
+        firstName: "Admin",
+        lastName: "User",
+        role: "admin" as const
+      },
+      {
+        email: "agent@jaipurhelp.com", 
+        password: defaultPassword,
+        firstName: "Agent",
+        lastName: "User",
+        role: "agent" as const
+      }
+    ];
+
+    for (const user of defaultUsers) {
+      const existing = await this.getUserByEmail(user.email);
+      if (!existing) {
+        await db.insert(users).values(user);
+      }
+    }
   }
 }
 

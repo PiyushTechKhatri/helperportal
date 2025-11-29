@@ -1,7 +1,9 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
-import { setupAuth } from "./replitAuth";
+import { setupSimpleAuth } from "./simpleAuth";
 import { createServer } from "http";
 
 const app = express();
@@ -61,7 +63,19 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  await setupAuth(app);
+  // Setup session middleware
+  app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-session-secret-key-here',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  }));
+
+  // Setup simple auth
+  setupSimpleAuth(app);
   await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

@@ -165,26 +165,30 @@ export function Header() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <a href="/api/logout" className="cursor-pointer gap-2 text-destructive">
-                    <LogOut className="h-4 w-4" />
-                    {t("nav.logout")}
-                  </a>
+                <DropdownMenuItem 
+                  className="cursor-pointer gap-2 text-destructive"
+                  onClick={async () => {
+                    await fetch('/api/auth/logout', { method: 'POST' });
+                    window.location.href = '/';
+                  }}
+                >
+                  <LogOut className="h-4 w-4" />
+                  {t("nav.logout")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <a href="/api/login">
+              <Link href="/auth">
                 <Button variant="ghost" data-testid="button-login">
                   {t("nav.login")}
                 </Button>
-              </a>
-              <a href="/api/login" className="hidden sm:inline">
+              </Link>
+              <Link href="/auth" className="hidden sm:inline">
                 <Button data-testid="button-signup">
                   {t("nav.signup")}
                 </Button>
-              </a>
+              </Link>
             </div>
           )}
 
