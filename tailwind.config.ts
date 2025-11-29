@@ -10,6 +10,10 @@ export default {
         md: ".375rem", /* 6px */
         sm: ".1875rem", /* 3px */
       },
+      fontFamily: {
+        sans: ["Inter", "Noto Sans Devanagari", "system-ui", "sans-serif"],
+        hindi: ["Noto Sans Devanagari", "sans-serif"],
+      },
       colors: {
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
