@@ -1,0 +1,248 @@
+🏗️ PROJECT CONCEPT
+
+Project Name Ideas:
+
+JaipurHelp.in
+
+HelperJaipur.com
+
+KaamWale.in
+
+LabourSetu.in
+
+JaipurNaukriHelp.com
+
+Goal:
+To connect verified helpers and workers (from all categories — home, office, industrial) with clients or businesses in Jaipur through area-wise search and simple subscription-based direct contact.
+
+👥 USER TYPES
+1️⃣ Client / Employer (Main User)
+
+People or companies who want to hire helpers or workers.
+
+2️⃣ Worker / Helper
+
+Household helpers, drivers, cooks, guards, labourers, factory workers, etc.
+
+3️⃣ Agent / Staff
+
+Website staff who create and verify worker profiles and handle KYC.
+
+4️⃣ Admin
+
+Owner or manager controlling the whole system.
+
+🧱 PLATFORM STRUCTURE
+🧍 For Clients (Employers)
+
+Signup/Login via phone OTP or Google.
+
+Search Filters:
+
+Category (Maid, Driver, Carpenter, Construction Worker, Security Guard, Factory Helper, etc.)
+
+Area (Mansarovar, Sitapura, Malviya Nagar, etc.)
+
+Gender
+
+Experience
+
+Salary / Per Day / Per Month
+
+Full-time / Part-time / Contract
+
+Worker Profile View
+
+Name, photo, job type, skills, experience, rating, salary expectation
+
+KYC badge (verified by staff)
+
+Area location on map
+
+Contact button (phone & WhatsApp visible only for subscribed users)
+
+Subscription / Contact Plans
+
+Free: view limited profiles
+
+Basic (₹199/mo): 10 contact views
+
+Pro (₹499/mo): unlimited contacts + WhatsApp button
+
+Agency (₹999/mo): 3 logins, 100+ contacts
+
+Job Posting:
+Client can post requirement like
+
+“Need 2 factory helpers in Sitapura Industrial Area”
+
+Save Profiles:
+Add to favorite list, download as PDF, or share on WhatsApp.
+
+🧰 For Workers / Helpers
+
+(Profile made by Agent / Staff)
+
+Profile contains:
+
+Name, photo, age, gender
+
+Job category
+
+Skills / Experience
+
+Preferred area
+
+Salary expectation
+
+KYC documents (Aadhaar, address proof)
+
+Availability (full-time / part-time / contract)
+
+Reference details (optional)
+
+Workers can later update info via agent call or office visit.
+
+Verification levels:
+
+✅ Basic Verified (KYC done by agent)
+
+🛡️ Police Verified (if police document uploaded)
+
+⭐ Premium Verified (extra fee, more visibility)
+
+🧾 For Agents / Staff
+
+Login panel for agents
+
+Add/edit worker profiles
+
+Upload KYC documents
+
+Take worker photo and details offline (field data collection)
+
+Each agent assigned area (e.g., Mansarovar, Sanganer)
+
+Commission for each approved worker or verified profile
+
+⚙️ For Admin
+
+Approve / reject worker profiles
+
+Assign agents and manage their activity
+
+Create & edit subscription plans
+
+Manage payments and invoices
+
+Track analytics:
+
+Active workers per area
+
+Top-searched categories
+
+Conversion & revenue stats
+
+📞 Contact & Subscription Logic
+Plan	Price	Contacts Visible	WhatsApp Button	Job Post
+Free	₹0	2 profiles	❌	1 post
+Basic	₹199	10	✅	3 posts
+Premium	₹499	Unlimited	✅	Unlimited
+Business	₹999	3 users	✅	Unlimited
+💡 ADDITIONAL SMART FEATURES
+Category	Feature
+🗺️ Area Pages	SEO pages like “Factory Helpers in Sitapura” / “Maids in Malviya Nagar”
+🧾 Printable Worker Card	Workers get printable “Helper ID Card” with QR code linking to online profile
+📱 Click-to-Call / WhatsApp	Direct communication (visible for subscribers only)
+🧠 Smart Recommendation	Show best matches based on client’s previous searches
+📍 GPS Map View	Show helpers near selected Jaipur area
+🧰 Industry-wise Categories	Home / Office / Hotel / Factory / Construction / Hospital helpers
+🕵️ Verification Badge System	“Verified by Staff”, “Police Verified”, etc.
+🧑‍💼 Agency Login (B2B)	For contractors or HRs needing multiple workers
+📩 Notifications	Email/SMS alerts for new job matches or subscription expiry
+💬 Chat Support	Quick inquiry or support via WhatsApp
+🌐 Multi-Language	English + Hindi (most workers prefer Hindi)
+📊 Reports & Analytics	Worker performance, client contact count, etc.
+🧾 Digital Agreement Option	Auto-generate simple work contract (optional future feature)
+🧮 REVENUE STREAMS
+
+Client Subscription Plans (main)
+
+Worker Profile Boosting / Premium Visibility (₹99/month)
+
+Agency / B2B Subscriptions
+
+Verification Fees (₹49–99 per worker)
+
+Local Ads (Plumbers, Electricians, etc.)
+
+Lead Sale (optional) — send verified contacts to local agencies
+
+🔐 SECURITY & TRUST
+
+Worker KYC mandatory (Aadhaar, photo)
+
+Admin-approved verification system
+
+Worker data stored securely (no public exposure of phone until paid access)
+
+Terms & conditions + privacy policy for both parties
+
+💻 TECH STACK
+Layer	Recommendation
+Frontend	Next.js / React + TailwindCSS
+Backend	Node.js (Express) or Laravel
+Database	MongoDB / MySQL
+Auth	Firebase Auth / JWT
+Payment Gateway	Razorpay
+Hosting	Vercel (frontend) + Render/AWS (backend)
+Admin Panel	React Admin / Laravel Nova / custom dashboard
+CRM/Support	Freshdesk or WhatsApp Business API
+🚀 DEVELOPMENT PHASES
+Phase 1 (Core Platform)
+
+User + worker modules
+
+Agent panel for adding workers
+
+Area-wise + category-wise search
+
+Subscription & payment
+
+Admin panel
+
+Phase 2 (Enhancements)
+
+WhatsApp integration
+
+SEO pages for all areas & job categories
+
+Worker ID card + QR profile
+
+Multi-language interface (Hindi + English)
+
+Phase 3 (Growth Features)
+
+Analytics dashboard
+
+B2B agency logins
+
+Digital contract & e-verification system
+
+Launch mobile app
+
+🌍 EXAMPLE SITE MAP
+Home
+Find Helpers
+  ├── Maids in Jaipur
+  ├── Factory Helpers
+  ├── Drivers
+  ├── Construction Workers
+  ├── Office Boys
+  ├── Security Guards
+Post a Job
+Subscription Plans
+Become an Agent
+About Us
+Contact / Support
+Admin Login
