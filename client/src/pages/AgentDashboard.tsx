@@ -102,9 +102,18 @@ export default function AgentDashboard() {
     queryKey: ["/api/categories"],
   });
 
-  const { data: areas } = useQuery<Area[]>({
-    queryKey: ["/api/areas"],
+  const { data: agentAreas } = useQuery<Area[]>({
+    queryKey: ["/api/agent/areas"],
+    enabled: isAuthenticated && user?.role === "agent",
   });
+
+  const { data: allAreas } = useQuery<Area[]>({
+    queryKey: ["/api/areas"],
+    enabled: isAuthenticated && user?.role === "agent",
+  });
+
+  // Show agent areas if available, otherwise show all areas
+  const areas = agentAreas && agentAreas.length > 0 ? agentAreas : allAreas;
 
   const { data: stats } = useQuery<{
     totalWorkers: number;

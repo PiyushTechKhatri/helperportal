@@ -261,6 +261,21 @@ export async function registerRoutes(app: Express) {
     res.json(stats);
   });
 
+  app.get("/api/agent/areas", isAuthenticated, async (req, res) => {
+    const user = getUser(req);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const dbUser = await storage.getUser(user.id);
+    if (dbUser?.role !== "agent") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const areas = await storage.getAgentAreas(user.id);
+    res.json(areas);
+  });
+
   app.post("/api/agent/workers", isAuthenticated, async (req, res) => {
     const user = getUser(req);
     if (!user) {
@@ -298,8 +313,81 @@ export async function registerRoutes(app: Express) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const workers = await storage.getWorkers();
+    const workers = await storage.getPendingWorkers();
     res.json(workers);
+  });
+
+  app.get("/api/admin/agents", isAuthenticated, async (req, res) => {
+    const user = getUser(req);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const dbUser = await storage.getUser(user.id);
+    if (dbUser?.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const agents = await storage.getAgents();
+    res.json(agents);
+  });
+
+  app.post("/api/admin/agents", isAuthenticated, async (req, res) => {
+    const user = getUser(req);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const dbUser = await storage.getUser(user.id);
+    if (dbUser?.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const { email, firstName, lastName, areas } = req.body;
+    
+    if (!email || !firstName || !areas || areas.length === 0) {
+      return res.status(400).json({ message: "Email, first name, and areas are required" });
+    }
+
+    try {
+      const bcrypt = await import("bcrypt");
+      const defaultPassword = await bcrypt.hash("agent123", 10);
+      
+      const agent = await storage.createUser({
+        email,
+        password: defaultPassword,
+        firstName,
+        lastName: lastName || "",
+        role: "agent"
+      });
+
+      // Assign areas to agent
+      for (const areaId of areas) {
+        await storage.assignAgentToArea(agent.id, areaId);
+      }
+
+      res.json({ ...agent, password: undefined });
+    } catch (error: any) {
+      if (error.code === '23505') { // Unique constraint violation
+        return res.status(409).json({ message: "Agent with this email already exists" });
+      }
+      res.status(500).json({ message: "Failed to create agent" });
+    }
+  });
+
+  app.get("/api/admin/stats", isAuthenticated, async (req, res) => {
+    const user = getUser(req);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const dbUser = await storage.getUser(user.id);
+    if (dbUser?.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const stats = await storage.getAdminStats();
+    res.json(stats);
   });
 
   app.get("/api/admin/workers/pending", isAuthenticated, async (req, res) => {
@@ -347,21 +435,6 @@ export async function registerRoutes(app: Express) {
     res.json(worker);
   });
 
-  app.get("/api/admin/agents", isAuthenticated, async (req, res) => {
-    const user = getUser(req);
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const dbUser = await storage.getUser(user.id);
-    if (dbUser?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-
-    const agents = await storage.getAgents();
-    res.json(agents);
-  });
-
   app.get("/api/admin/subscriptions", isAuthenticated, async (req, res) => {
     const user = getUser(req);
     if (!user) {
@@ -373,22 +446,6 @@ export async function registerRoutes(app: Express) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    // Return empty array for now
     res.json([]);
-  });
-
-  app.get("/api/admin/stats", isAuthenticated, async (req, res) => {
-    const user = getUser(req);
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const dbUser = await storage.getUser(user.id);
-    if (dbUser?.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-
-    const stats = await storage.getAdminStats();
-    res.json(stats);
   });
 }

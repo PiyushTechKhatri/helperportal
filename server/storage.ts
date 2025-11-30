@@ -97,6 +97,10 @@ export interface IStorage {
   unsaveWorker(userId: string, workerId: string): Promise<void>;
   isWorkerSaved(userId: string, workerId: string): Promise<boolean>;
 
+  // Agent Assignments
+  assignAgentToArea(agentId: string, areaId: string): Promise<void>;
+  getAgentAreas(agentId: string): Promise<Area[]>;
+
   // Stats
   getStats(): Promise<{ workers: number; employers: number; verified: number }>;
   getAdminStats(): Promise<{
@@ -598,6 +602,22 @@ class DatabaseStorage implements IStorage {
       approved: Number(approved[0]?.count || 0),
       thisMonth: Number(thisMonth[0]?.count || 0),
     };
+  }
+
+  // Agent Assignments
+  async assignAgentToArea(agentId: string, areaId: string): Promise<void> {
+    await db.insert(agentAssignments).values({
+      agentId,
+      areaId
+    });
+  }
+
+  async getAgentAreas(agentId: string): Promise<Area[]> {
+    const result = await db.select().from(agentAssignments)
+      .innerJoin(areas, eq(agentAssignments.areaId, areas.id))
+      .where(and(eq(agentAssignments.agentId, agentId), eq(agentAssignments.isActive, true)));
+    
+    return result.map(row => row.areas);
   }
 
   // Seeding

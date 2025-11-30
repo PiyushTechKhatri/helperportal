@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AgentManagement } from "@/components/admin/AgentManagement";
 import {
   Table,
   TableBody,
@@ -390,57 +391,7 @@ export default function AdminDashboard() {
         </TabsContent>
 
         <TabsContent value="agents">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Agents</CardTitle>
-              <Badge variant="secondary">{agents?.length || 0} total</Badge>
-            </CardHeader>
-            <CardContent>
-              {agents && agents.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Agent</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {agents.map((agent) => (
-                      <TableRow key={agent.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                              <AvatarImage src={agent.profileImageUrl || undefined} />
-                              <AvatarFallback>
-                                {agent.firstName?.[0] || agent.email?.[0]?.toUpperCase() || "A"}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-medium">
-                                {agent.firstName} {agent.lastName}
-                              </p>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>{agent.email}</TableCell>
-                        <TableCell>
-                          <Badge variant={agent.isActive ? "default" : "secondary"}>
-                            {agent.isActive ? "Active" : "Inactive"}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No agents found</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <AgentManagement />
         </TabsContent>
 
         <TabsContent value="subscriptions">
